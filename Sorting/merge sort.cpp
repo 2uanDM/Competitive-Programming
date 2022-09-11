@@ -5,9 +5,7 @@ using namespace std;
 #define fi first
 #define se second
 
-int n,a[10001],data[10001];
-// a là mảng tạm để sort
-// data là mảng ban đầu
+int n,a[100001], data[100001];
 void prta(int arr[],int n)
 {
     for(int i = 1; i<=n; ++i)
@@ -20,34 +18,35 @@ void input()
     for(int i =1; i<=n; ++i)
         cin >> data[i];
 }
-void solve(int left, int right)
+void solve(int low, int high)
 {
-    if (left == right)
+    if (low == high)
         return;
+    int mid = (low+high)/2;
+    solve(low, mid);
+    solve(mid+1, high);
 
-    int mid = (left + right) / 2;
-    solve(left, mid);
-    solve(mid+1, right);
-
-    int i = left, j = mid+1;
-    int cur = 0;
-
-    while (i <= mid || j <= right)
+    int i = low, j = mid+1, cur = 0;
+    while(i <= mid || j <= high)
     {
-        if (i > mid) a[cur++] = data[j++];
-        else
-        {
-            if (j > right) a[cur++] = data[i++];
-            else
-            {
-                if (data[i]>data[j]) a[cur++] = data[j++];
-                else a[cur++] = data[i++];
+        if (i>mid){
+            a[cur++] = data[j++];
+        }
+        else{
+            if(j > high){
+                a[cur++] = data[i++];
+            }
+            else{
+                if(data[i]>data[j])
+                    a[cur++] = data[j++];
+                    else a[cur++] = data[i++];
+
             }
         }
     }
 
-    for(int i = 0; i < cur; i++)
-        data[left + i] = a[i];
+    for(int i = 0; i<cur; ++i)
+        data[low+i] = a[i];
 }
 int main()
 {
